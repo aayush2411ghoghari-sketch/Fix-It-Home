@@ -1,0 +1,133 @@
+# FixIt Now — MVP Specification
+
+**On-demand home repair & maintenance booking marketplace**
+
+---
+
+## 1. Problem & Opportunity
+
+Finding a reliable plumber, electrician, or appliance technician is still disorganized in most cities — people rely on word of mouth, unreliable directories, or cold-calling multiple numbers. There's no simple way to post a job, see nearby verified technicians, and pay in one place.
+
+## 2. Goal of the MVP
+
+Validate a single core loop: **a customer can post a job in under 60 seconds, a nearby technician accepts it, and the job gets paid for in-app.** Nothing else matters until this loop is proven.
+
+## 3. Target Users
+
+| User | Need |
+|---|---|
+| Customer | Fast, trustworthy way to book a home repair |
+| Technician | Steady stream of local job leads without cold marketing |
+| Platform (you) | Commission per completed job (10–15%) |
+
+## 4. Scope: What's IN
+
+### Customer app
+- Post a job: category (plumbing / electrical / appliance / AC), short description, 1–2 photos, address, urgency (today / this week)
+- View 2–3 nearby available technicians with rating + flat price estimate
+- Book a technician
+- Basic in-app chat (text only)
+- Mark job complete, pay in-app, leave a rating
+
+### Technician app
+- Simple profile: services offered, service radius, ID verification (manual review)
+- Receive and accept/decline job requests
+- Mark job complete, view earnings
+
+### Admin (internal)
+- Manually approve technician sign-ups
+- View all jobs and resolve disputes
+- Track commission revenue
+
+## 5. Scope: What's OUT (deliberately, for v1)
+
+- No live GPS tracking (address + text ETA only)
+- No in-app video consultations
+- No dynamic/algorithmic pricing — flat quoted estimates only
+- No native mobile app — a mobile-responsive web app is sufficient to test demand
+- No automated technician vetting (do it manually for the first 20–30)
+
+## 6. Core User Flow
+
+```
+CUSTOMER                                    TECHNICIAN
+   |                                             |
+   | Posts job (category, photo, address)        |
+   | -------------------------------------------> |
+   |                                        Sees job request
+   |                                        Accepts / Declines
+   | <------------------------------------------- |
+   | Chats to confirm details                     |
+   | <-------------------------------------------> |
+   |                                        Completes job on-site
+   | Marks job complete, pays in-app               |
+   | -------------------------------------------> |
+   |                                        Receives payout (minus commission)
+   | Rates technician                              |
+```
+
+## 7. Data Model (simplified)
+
+**users**
+- id, name, phone, email, role (customer / technician), created_at
+
+**technician_profiles**
+- user_id, services[], service_radius_km, id_verified (bool), rating_avg, status (pending / approved)
+
+**jobs**
+- id, customer_id, category, description, photo_url, address, urgency, status (posted / accepted / in_progress / completed / cancelled), price_estimate, created_at
+
+**bookings**
+- id, job_id, technician_id, accepted_at, completed_at
+
+**messages**
+- id, job_id, sender_id, text, sent_at
+
+**payments**
+- id, job_id, amount, commission, technician_payout, status, paid_at
+
+**ratings**
+- id, job_id, rating (1–5), comment
+
+## 8. Tech Stack Recommendation
+
+- **Frontend:** Mobile-responsive web app (React) — avoids app-store friction during validation
+- **Backend:** Node.js/Express or similar, with a hosted Postgres database
+- **Payments:** Stripe Connect (built for two-sided marketplaces — handles customer charges and technician payouts)
+- **Messaging:** Simple in-app chat (Firebase or a lightweight WebSocket setup); no need for a dedicated chat vendor at this stage
+- **Auth:** Phone number OTP (lowest friction for both customer and technician sign-up)
+
+## 9. Build Plan (4 weeks)
+
+| Week | Milestone |
+|---|---|
+| 1–2 | Job posting + technician listing/matching (no payments yet — a working marketplace board) |
+| 3 | In-app chat + booking confirmation flow |
+| 4 | Payments (Stripe Connect) + ratings + admin dashboard |
+
+## 10. Pre-Build Validation (do this first, costs nothing)
+
+Before writing any code:
+1. Pick **one neighborhood or suburb**
+2. Manually recruit 10–15 technicians (call local plumbers/electricians directly)
+3. Run the matching process yourself via WhatsApp/phone for two weeks
+4. If people actually book and pay through this manual process, the demand is real — build the app next
+
+## 11. Success Metrics for MVP
+
+- % of posted jobs that get accepted within 30 minutes
+- % of accepted jobs that reach "completed" status
+- Repeat booking rate (customer books again within 30 days)
+- Technician retention (technician completes >3 jobs in first month)
+
+## 12. Monetization
+
+- Commission per completed job: 10–15%, deducted automatically via Stripe Connect at payout
+- Future: optional subscription tier for technicians (lower commission, priority placement)
+
+## 13. Next Steps After MVP Validation
+
+- Add push notifications (native app)
+- Add live technician tracking
+- Expand categories (cleaning, gardening, moving)
+- Introduce dynamic pricing based on demand/urgency
