@@ -10,6 +10,14 @@
 
 ---
 
+## 📸 Application UI Screenshots
+
+| Technician & Category Browse | Job Details & Status Tracking |
+| :---: | :---: |
+| ![Browse & Categories](screenshots/browse_screen.png) | ![Job Details & Chat](screenshots/job_details.png) |
+
+---
+
 ## 🌟 Key Features
 
 - 📱 **Mobile-First Client App (Expo / React Native)**:
@@ -43,6 +51,7 @@ Fix-It-Home/
 │   ├── api-spec/          # OpenAPI specification & Orval codegen script
 │   ├── api-zod/           # Auto-generated Zod validation schemas
 │   └── api-client-react/  # Generated TanStack React Query hooks
+├── screenshots/           # Application UI screenshots
 ├── scripts/               # Workspace build & post-merge maintenance scripts
 ├── pnpm-workspace.yaml    # Monorepo configuration
 ├── package.json           # Workspace package definitions
