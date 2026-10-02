@@ -12,9 +12,9 @@
 
 ## 📸 Application UI Screenshots
 
-| Technician & Category Browse | Job Details & Status Tracking |
-| :---: | :---: |
-| ![Browse & Categories](screenshots/browse_screen.png) | ![Job Details & Chat](screenshots/job_details.png) |
+| 1. Welcome & Onboarding | 2. Nearby Technicians | 3. Service Category Selection |
+| :---: | :---: | :---: |
+| ![Welcome & Onboarding](screenshots/welcome_screen.png) | ![Nearby Technicians](screenshots/technicians_screen.png) | ![Service Category Selection](screenshots/categories_screen.png) |
 
 ---
 
